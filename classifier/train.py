@@ -14,10 +14,8 @@ transform_ = transforms.Compose([
 ])
 
 train_data = ImageFolder(r'D:\computer_vision\DATASETS\train',transform=transform_)
-test_data = ImageFolder(r'D:\computer_vision\DATASETS\test',transform=transform_)
 
 train_loader=DataLoader(dataset=train_data,batch_size=32,shuffle=False,num_workers=0)
-test_loader=DataLoader(dataset=test_data,batch_size=32,shuffle=False,num_workers=0)
 
 
 class NeuralNet(nn.Module):
@@ -39,7 +37,8 @@ class NeuralNet(nn.Module):
         nn.Conv2d(64,128,(2,2)),
         nn.ReLU(),
         nn.Flatten(),
-        nn.Linear(61952,2),
+        nn.Linear(61952,2)
+       
        
         
         )
@@ -58,7 +57,7 @@ model = NeuralNet()
 
 
 criterion = nn.CrossEntropyLoss()
-optimiser = torch.optim.Adam(model.parameters(),lr = 0.01112)
+optimiser = torch.optim.Adam(model.parameters(),lr = 0.00002)
 
 
 epoch = 20
@@ -67,20 +66,17 @@ for epochs in range (epoch):
    
 
    for images,labels in train_loader:
+       optimiser.zero_grad()
 
-       output = model(images)
-       labels = labels
-    
+       output = model(images)    
     
        error = criterion(output,labels)
 
-       optimiser.zero_grad()
+       
 
        error.backward()
 
        optimiser.step()
-   print(f"Epoch {epochs+1}/{epoch}, Loss: {error.item():.4f}")
+   print(f"loss of model at epoch {epochs+1}/{epoch} is {error}.4f")
  
-
-
-
+torch.save(model.state_dict(), "cat_dog_model.pth")
