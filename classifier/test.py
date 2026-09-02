@@ -4,6 +4,7 @@ import torch.nn as nn
 from torch.utils.data import DataLoader
 from torchvision import datasets,transforms
 from torchvision.datasets import ImageFolder
+from model import NeuralNet
 
 transform_ = transforms.Compose([
     transforms.Resize((32,32)),
@@ -15,36 +16,11 @@ transform_ = transforms.Compose([
 test_data = ImageFolder(r'D:\computer_vision\DATASETS\test',transform=transform_)
 test_loader=DataLoader(dataset=test_data,batch_size=8,shuffle=False,num_workers=0)
 
-class NeuralNet(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.fc1 =nn.Sequential(
-        nn.Conv2d(3,12,(2,2)),
-        nn.ReLU(),
-        nn.MaxPool2d((2,2),1),
-        nn.Conv2d(12,24,(2,2)),
-        nn.ReLU(),
-        nn.MaxPool2d((2,2),1),
-        nn.Conv2d(24,36,(3,3)),
-        nn.ReLU(),
-        nn.MaxPool2d((2,2),1),
-        nn.Conv2d(36,64,(2,2)),
-        nn.ReLU(),
-        nn.MaxPool2d((2,2),1),
-        nn.Conv2d(64,128,(2,2)),
-        nn.ReLU(),
-        nn.Flatten(),
-        nn.Linear(61952,2)
-       
-       
-        
-        )
-
-    def forward(self,X):
-      X = self.fc1(X)
-
-      return X
 
 
+model = NeuralNet()
 
-model= NeuralNet()
+for image,label in test_loader:
+    release = model(image)
+
+print(release.shape)
