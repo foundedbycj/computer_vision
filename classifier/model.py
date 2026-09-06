@@ -1,31 +1,34 @@
 import torch.nn as nn
-import torch
 
 class NeuralNet(nn.Module):
     def __init__(self):
-        
         super().__init__()
-        self.fc1 =nn.Sequential(
-        nn.Conv2d(3,12,(2,2)),
-        nn.ReLU(),
-        nn.MaxPool2d((2,2),1),
-        nn.Conv2d(12,24,(2,2)),
-        nn.ReLU(),
-        nn.MaxPool2d((2,2),1),
-        nn.Conv2d(24,36,(3,3)),
-        nn.ReLU(),
-        nn.MaxPool2d((2,2),1),
-        nn.Conv2d(36,64,(2,2)),
-        nn.ReLU(),
-        nn.Flatten(),
-        nn.Linear(36864,2)
 
-       
-       
-        
+        self.features = nn.Sequential(
+            # Input: 3 × H × W
+            nn.Conv2d(3, 16, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2, 2),
+
+            # 16 channels
+            nn.Conv2d(16, 32, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2, 2),
+
+            # 32 channels
+            nn.Conv2d(32, 64, kernel_size=3, padding=1),
+            nn.ReLU(),
+            nn.MaxPool2d(2, 2),
         )
 
-    def forward(self,X):
-      X = self.fc1(X)
+        self.classifier = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(64 * 4 * 4, 128),
+            nn.ReLU(),
+            nn.Linear(128, 2)
+        )
 
-      return X
+    def forward(self, x):
+        x = self.features(x)
+        x = self.classifier(x)
+        return x

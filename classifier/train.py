@@ -17,16 +17,16 @@ transform_ = transforms.Compose([
 
 train_data = ImageFolder(r'D:\computer_vision\DATASETS\train',transform=transform_) 
 
-train_loader=DataLoader(dataset=train_data,batch_size=32,shuffle=False,num_workers=0) # make a dataloader to pack up the data folder and separate them into images and labels
+train_loader=DataLoader(dataset=train_data,batch_size=32,shuffle=True,num_workers=0) # make a dataloader to pack up the data folder and separate them into images and labels
  
 model = NeuralNet() #instantiate the model from 'model.py' 
 
 criterion = nn.CrossEntropyLoss()
 
-optimiser = torch.optim.SGD(model.parameters(),lr = 0.001) # set up the optimiser
+optimiser = torch.optim.Adam(model.parameters(),lr = 0.0005)# set up the optimiser
 
 
-epoch = 20
+epoch = 40
 losses  = []
 for epochs in range (epoch):
     running_loss = 0.0
@@ -60,3 +60,6 @@ plt.plot(n_epoch,losses)
 plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.show()
+
+
+torch.save(model.state_dict(),'/classifier/saved_weights.pt')
