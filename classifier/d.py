@@ -1,22 +1,18 @@
-import os
-import random
-
-folder_path = r'D:\computer_vision\DATASETS\test'
-
-# 1. Get all files in that directory
-filenames = os.listdir(folder_path)
-
-# 2. Scramble the list order in Python's memory
-random.shuffle(filenames)
-
-# 3. Physically rename the files on your disk with a number prefix
-for index, name in enumerate(filenames, start=1):
-    old_path = os.path.join(folder_path, name)
+from PIL import Image
+from torchvision import transforms
+from model import NeuralNet
+image = Image.open('DATASETS/test/0001_dog_dog_19.jpg')
+transform_ = transforms.Compose([
+    transforms.Resize((32,32)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.5,0.5,0.5], std=[0.5,0.5,0.5])
     
-    # Creates names like: 0001_image.jpg, 0002_photo.png
-    new_name = f"{index:04d}_{name}"
-    new_path = os.path.join(folder_path, new_name)
-    
-    os.rename(old_path, new_path)
+])
 
-print("Check your Windows folder now! The files are physically reordered.")
+
+image = transform_(image)
+
+
+
+model = NeuralNet()
+print(model(image).shape)

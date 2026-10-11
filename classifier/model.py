@@ -19,14 +19,20 @@ class NeuralNet(nn.Module):
             nn.Conv2d(32, 64, kernel_size=3, padding=1),
             nn.ReLU(),
             nn.MaxPool2d(2, 2),
-        )
+
+            # 64 channel 
+            nn.Conv2d(64,128,kernel_size=3),
+            nn.ReLU(),
+            nn.MaxPool2d((2,2),2),
+            nn.Flatten())
 
         self.classifier = nn.Sequential(
-            nn.Flatten(),
-            nn.Linear(64 * 4 * 4, 128),
-            nn.ReLU(),
-            nn.Linear(128, 2)
+            nn.Linear(128,60),
+            nn.Dropout(),
+            nn.Linear(60,2)
         )
+
+     
 
     def forward(self, x):
         x = self.features(x)

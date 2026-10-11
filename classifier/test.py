@@ -8,6 +8,7 @@ from model import NeuralNet
 from PIL import Image
 import pandas as pd
 from torch.nn import Softmax
+
 class TestFolder (Dataset):
     def __init__ ( self,path,transform):
         self.path = path
@@ -36,7 +37,7 @@ test_loader = DataLoader(test_folder,batch_size=15,shuffle=False)
 
 
 model = NeuralNet()
-weights = torch.load('classifier/saved_weights.pt' ,weights_only=True)
+weights = torch.load('classifier/weights/saved_weights.pt' ,weights_only=True)
 model.load_state_dict(weights)
 
 
