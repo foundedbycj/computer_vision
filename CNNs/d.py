@@ -1,6 +1,6 @@
 from PIL import Image
 from torchvision import transforms
-from model import NeuralNet
+from CNNs.classifier.model import NeuralNet
 image = Image.open('DATASETS/test/0001_dog_dog_19.jpg')
 transform_ = transforms.Compose([
     transforms.Resize((32,32)),

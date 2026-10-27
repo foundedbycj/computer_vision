@@ -37,7 +37,7 @@ test_loader = DataLoader(test_folder,batch_size=15,shuffle=False)
 
 
 model = NeuralNet()
-weights = torch.load('classifier/weights/saved_weights.pt' ,weights_only=True)
+weights = torch.load(r'D:\computer_vision\CNNs\weights\saved_weights.pt' ,weights_only=True)
 model.load_state_dict(weights)
 
 
