@@ -62,4 +62,4 @@ plt.ylabel('Loss')
 plt.show()
 
 
-torch.save(model.state_dict(),'classifier/weights/saved_weights.pt')
+torch.save(model.state_dict(),'CNNs/weights/saved_weights.pt')
